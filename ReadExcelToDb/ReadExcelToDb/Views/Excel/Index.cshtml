@@ -1,0 +1,59 @@
+﻿
+@model IEnumerable<IntervalData>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div>
+        @using (Html.BeginForm("UploadExcel", "Excel", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <span>Select File:</span>
+            <input type="file" name="postedFile" required />
+            <hr />
+            <input type="submit" value="Upload" />
+            <br />
+            <span style="color:green">@ViewBag.Message</span>
+        }
+
+        @if (Model != null && Model.Count() > 0)
+        {
+            <hr />
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Delivery Point</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">TimeSlot</th>
+                        <th scope="col">SlotVal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        @foreach ((IntervalData value, Int32 i) in Model.Select((value, i) => (value, i)))
+                        {
+                            <tr scope="row">
+                                <td>@(i + 1)</td>
+                                <td>@value.DeliveryPoint</td>
+                                <td>@value.Date</td>
+                                <td>@value.TimeSlot</td>
+                                <td>@value.SlotVal</td>
+                            </tr>
+                        }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <h3>No data found.</h3>
+        }
+    </div>
+</body>
+</html>
+
